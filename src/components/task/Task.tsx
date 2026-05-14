@@ -9,7 +9,7 @@ interface TaskProps {
 const Task = ({ mission }: TaskProps) => {
   const { id, creationTime, isCompleted, name } = mission;
   const missionContext = useContext(MissionContext);
-
+  const { setMission } = missionContext;
   const onClickCopmleteHandler = () => {
     const missions = missionContext?.missions;
 
@@ -26,7 +26,7 @@ const Task = ({ mission }: TaskProps) => {
       (a, b) => b.creationTime - a.creationTime,
     );
 
-    missionContext.setMission(newMissions);
+    setMission(newMissions);
   };
 
   const onClickDeleteHandler = () => {
@@ -36,7 +36,7 @@ const Task = ({ mission }: TaskProps) => {
       ?.filter((x) => x.id !== id)
       .sort((a, b) => b.creationTime - a.creationTime);
 
-    missionContext.setMission(filteredMissions);
+    setMission(filteredMissions);
   };
 
   return (

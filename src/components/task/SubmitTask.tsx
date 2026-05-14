@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 
 const SubmitTask = () => {
   const missionContext = useContext(MissionContext);
+  const { missions, setMission } = missionContext;
   const [name, setName] = useState("");
 
   const onSubmitHandler = () => {
@@ -21,21 +22,18 @@ const SubmitTask = () => {
         isCompleted: false,
         name: name,
       };
-      let missions = missionContext.missions;
+      let missionsFromContex = missions;
 
-      if (
-        missionContext.missions == undefined ||
-        missionContext.missions == null
-      ) {
-        missions = [];
-        missionContext.setMission(missions);
+      if (missions == undefined || missions == null) {
+        missionsFromContex = [];
+        setMission(missionsFromContex);
       }
 
-      const newMissions = [...missions, mission].sort(
+      const newMissions = [...missionsFromContex, mission].sort(
         (a, b) => b.creationTime - a.creationTime,
       );
 
-      missionContext.setMission(newMissions);
+      setMission(newMissions);
       setName("");
     }
   };
