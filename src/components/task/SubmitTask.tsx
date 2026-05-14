@@ -1,22 +1,14 @@
-import { useContext, useState } from "react";
-import { useEffect } from "react";
-import { type missionType } from "../context/MissionContex";
-import { useCookies } from "react-cookie";
-import { MissionContext } from "../context/MissionContexCreator";
 import { TextField } from "@mui/material";
+import { useContext, useState, type ChangeEvent } from "react";
+import type { missionType } from "../../context/Task/TaskProvider";
+import { MissionContext } from "../../context/Task/TaskContex";
+import { v4 as uuidv4 } from "uuid";
 
-const AddMissionComponent = () => {
+const SubmitTask = () => {
   const missionContext = useContext(MissionContext);
-  const [cookies, setCookie] = useCookies(["missions"]);
   const [name, setName] = useState("");
 
-  useEffect(() => {
-    if (cookies != null) {
-      missionContext?.setMission(cookies.missions);
-    }
-  }, [cookies, missionContext]);
-
-  const onClickHandler = () => {
+  const onSubmitHandler = () => {
     if (name == "") {
       alert("task must not be empty!");
       return;
@@ -24,7 +16,8 @@ const AddMissionComponent = () => {
 
     if (missionContext) {
       const mission: missionType = {
-        id: Date.now(),
+        id: uuidv4(),
+        creationTime: Date.now(),
         isCompleted: false,
         name: name,
       };
@@ -38,12 +31,16 @@ const AddMissionComponent = () => {
         missionContext.setMission(missions);
       }
 
-      const newMissions = [...missions, mission].sort((a, b) => b.id - a.id);
-      setCookie("missions", newMissions);
+      const newMissions = [...missions, mission].sort(
+        (a, b) => b.creationTime - a.creationTime,
+      );
+
+      missionContext.setMission(newMissions);
+      setName("");
     }
   };
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = event.currentTarget.value;
     setName(newValue);
   };
@@ -55,12 +52,13 @@ const AddMissionComponent = () => {
         variant="filled"
         label="enter your task:"
         onChange={onChange}
+        value={name}
       />
-      <button className="submit-button" type="submit" onClick={onClickHandler}>
+      <button className="submit-button" type="submit" onClick={onSubmitHandler}>
         Submit task
       </button>
     </div>
   );
 };
 
-export default AddMissionComponent;
+export default SubmitTask;

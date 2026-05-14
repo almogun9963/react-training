@@ -1,16 +1,11 @@
-import AddMissionComponent from "./components/AddMissionComponent";
-import TableComponent from "./components/TableComponent";
+import TableComponent from "./components/task/TaskList";
 import "./App.css";
-import { MissionContextProvider } from "./context/MissionContex";
 
 function App() {
   return (
-    <div>
-      <MissionContextProvider>
-        <AddMissionComponent />
-        <TableComponent />
-      </MissionContextProvider>
-    </div>
+    <>
+      <TableComponent />
+    </>
   );
 }
 

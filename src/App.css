@@ -64,6 +64,8 @@ p{
       white-space: nowrap;
     overflow: hidden;
   text-overflow: ellipsis;
+  max-height: 5rem;
+  max-width: 50rem;
 
 }
 
